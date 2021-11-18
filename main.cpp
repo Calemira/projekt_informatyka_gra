@@ -10,7 +10,7 @@
 
 
 
-int main()//siema
+int main()
 {
 	srand(time(NULL));
 	Pomoc pomoc;
