@@ -147,12 +147,14 @@
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="pet.cpp" />
     <ClCompile Include="pomoc.cpp" />
+    <ClCompile Include="slupki.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gra.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="pet.h" />
     <ClInclude Include="pomoc.h" />
+    <ClInclude Include="slupki.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

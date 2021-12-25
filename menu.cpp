@@ -3,8 +3,9 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
-Menu::Menu(float width, float height)
+Menu::Menu(float width, float height, sf::View* adres_kamery)
 {
+	//adres_kamery->
 	if (!font.loadFromFile("arial.ttf"))
 	{
 		return;
@@ -21,6 +22,7 @@ Menu::Menu(float width, float height)
 	menu[2].setFillColor(sf::Color::White);
 	menu[2].setString("Wyjscie");
 	menu[2].setPosition(sf::Vector2f(width / 3, height / (MAX_LICZBA_POZIOMOW + 1) * 3));
+	
 }
 
 void Menu::draw(sf::RenderWindow& window)

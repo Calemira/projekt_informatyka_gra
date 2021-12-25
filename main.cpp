@@ -12,13 +12,14 @@
 
 int main()
 {
-	srand(time(NULL));
 	Pomoc pomoc;
 	int menu_selected_flag = 0;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Flappy pet");
-	Menu menu(window.getSize().x, window.getSize().y);
+	sf::View kamera({ 0.f,0.f,800.f,600.f });
+	Menu menu(window.getSize().x, window.getSize().y, &kamera);
 	window.setFramerateLimit(60);
-	gra program(&window);
+	//gra program(&window, &kamera);
+	gra* program = 0;
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -46,6 +47,7 @@ int main()
 					if (event.key.code == sf::Keyboard::Enter && menu.getSelectedItem() == 0)
 					{
 						menu_selected_flag = 1;
+						program=new gra(&window, &kamera);
 					}
 
 					if (event.key.code == sf::Keyboard::Enter && menu.getSelectedItem() == 1)
@@ -65,14 +67,18 @@ int main()
 		{
 			menu.draw(window);
 		}
-		if (menu_selected_flag == 1)
+		if ((menu_selected_flag == 1)&&(program!=0))
 		{
-			program.draw();
+			program->sterowanie();
+			program->pozycja_kamery();
+			program->silnikfizyczny();
+			program->draw();
 		}
 		if (menu_selected_flag == 2)
 		{
 			pomoc.draw(window);
 		}
+		window.setView(kamera);
 		window.display();
 	}
 

@@ -11,10 +11,10 @@ private:
 	sf::Font font;
 	sf::Text menu[MAX_LICZBA_POZIOMOW];
 	int selectedItem = 0;
-
+	sf::View* kamera;
 
 public:
-	Menu(float width, float height);
+	Menu(float width, float height, sf::View* adres_kamery);
 	~Menu() {};
 	void przesunG();
 	void przesunD();
