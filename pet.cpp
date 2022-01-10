@@ -28,10 +28,15 @@ void pet::sterowanie()
 	{
 		czy_spacja_kliknieta = false;
 	}
-	ptak_ksztalt.setPosition(ptak_ksztalt.getPosition().x + 4, ptak_ksztalt.getPosition().y - 5 + 10 * zegar.getElapsedTime().asSeconds());
+	ptak_ksztalt.setPosition(ptak_ksztalt.getPosition().x + 4, ptak_ksztalt.getPosition().y - 3 + 10 * zegar.getElapsedTime().asSeconds());
 
 	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	//{
 	//	ptak_ksztalt.setPosition(ptak_ksztalt.getPosition().x+10, ptak_ksztalt.getPosition().y);//na potrzeby testow
 	//}
+}
+
+void pet::ustaw_czy_zyje(bool czy_zyje)
+{
+	this->czy_zyje = czy_zyje;
 }
