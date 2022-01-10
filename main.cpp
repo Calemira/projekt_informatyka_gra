@@ -6,17 +6,20 @@
 #include "pet.h"
 #include "Gra.h"
 #include "pomoc.h"
-#define MAX_LICZBA_POZIOMOW 3
 
 
 
 int main()
 {
 	Pomoc pomoc;
-	int menu_selected_flag = 0; // problematyczna zmienna 
+	//int menu_selected_flag = 0; // problematyczna zmienna 
+	int aktualny_ekran = 0; // 0 - Menu ; 1 - Gra ; 2 - Menu_Poziom_Wybor ; 112 - resetowanie ekranu
+	int poprzedni_ekran = 0;
+	unsigned int poziom_gry;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Flappy pet");
 	sf::View kamera({ 0.f,0.f,800.f,600.f });
-	Menu menu(&kamera);
+	Menu *menu = new Menu(&kamera,&aktualny_ekran);
+
 	window.setFramerateLimit(60);
 	//gra program(&window, &kamera);
 	gra* program = 0;
@@ -26,33 +29,65 @@ int main()
 		
 		while (window.pollEvent(event))
 		{
-			switch (menu_selected_flag)
+			if (event.type == sf::Event::Closed) { exit(0); }
+
+			switch (aktualny_ekran)
 			{
 			case 0:
 			case 2:
-				menu.sterowanie(&window, &event, menu_selected_flag);
+				menu->sterowanie(&window, &event);
 				break;
 			case 1:
 				program->sterowanie_event();
 				break;
 			}
 		}
+
+		if (aktualny_ekran != poprzedni_ekran)
+		{
+			if (poprzedni_ekran == 1)
+			{
+				delete program;
+				program = 0;
+			}
+			else
+			{
+				delete menu;
+				menu = 0;
+			}
+
+			if (aktualny_ekran == 112)
+			{
+				aktualny_ekran = poprzedni_ekran;
+			}
+			else
+			{
+				poprzedni_ekran = aktualny_ekran;
+			}
+
+			switch (aktualny_ekran)
+			{
+			case 0: if (menu == 0) { menu = new Menu(&kamera, &aktualny_ekran); }
+				break;
+			case 1: if (program == 0) {program = new gra(&window, &kamera, &event, &aktualny_ekran, &poziom_gry); }
+				break;
+			case 2: if (menu == 0) { menu = new Menu_Poziom_Wybor(&kamera, &aktualny_ekran, &poziom_gry); }
+				break;
+			}
+		}
+
 		window.clear();
-		if (menu_selected_flag == 0)
+
+		switch (aktualny_ekran)
 		{
-			menu.draw(&window);
-		}
-		if ((menu_selected_flag == 1) && (program == 0))
-		{
-			program = new gra(&window, &kamera, &event);
-		}
-		if ((menu_selected_flag == 1)&&(program!=0))
-		{
+		case 0:
+		case 2:
+			kamera.setCenter(400.f, 300.f);
+			menu->draw(&window);
+			break;
+		case 1:
 			program->aktualizuj();
-		}
-		if (menu_selected_flag == 2)
-		{
-			pomoc.draw(window);
+			break;
 		}
 		window.setView(kamera);
 		window.display();

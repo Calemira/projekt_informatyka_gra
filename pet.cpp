@@ -14,13 +14,14 @@ void pet::rysuj_pet(sf::RenderWindow *adres_okna)
 }
 void pet::sterowanie()
 {
+	zegar += 1.0 / 60.0;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		if (czy_spacja_kliknieta == false)
 		{
 			czy_spacja_kliknieta = true;
-			zegar.restart();
+			zegar = 0.0;
 			ptak_ksztalt.setPosition(ptak_ksztalt.getPosition().x, ptak_ksztalt.getPosition().y-5);
 		}
 	}
@@ -28,7 +29,7 @@ void pet::sterowanie()
 	{
 		czy_spacja_kliknieta = false;
 	}
-	ptak_ksztalt.setPosition(ptak_ksztalt.getPosition().x + 4, ptak_ksztalt.getPosition().y - 3 + 10 * zegar.getElapsedTime().asSeconds());
+	ptak_ksztalt.setPosition(ptak_ksztalt.getPosition().x + predkosc, ptak_ksztalt.getPosition().y - 3 + 10 * zegar);
 
 	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	//{
@@ -39,4 +40,9 @@ void pet::sterowanie()
 void pet::ustaw_czy_zyje(bool czy_zyje)
 {
 	this->czy_zyje = czy_zyje;
+}
+
+void pet::ustaw_predkosc(float predkosc)
+{
+	this->predkosc = predkosc;
 }

@@ -4,8 +4,13 @@
 #include <ctime>
 #include <cstdlib>
 
-Menu::Menu(sf::View* adres_kamery)
+Menu::Menu(sf::View* adres_kamery, int* aktualny_ekran)
 {
+	liczba_przyciskow = 3;
+	menu = new sf::Text[liczba_przyciskow];
+
+	this->aktualny_ekran = aktualny_ekran;
+
 	float width = 800.f;
 	float height = 600.f;
 
@@ -27,18 +32,18 @@ Menu::Menu(sf::View* adres_kamery)
 	{
 		return;
 	}
-	menu[0].setFont(font);
+
+	for (int i = 0; i < liczba_przyciskow; i++)
+	{
+		menu[i].setFont(font);
+		menu[1].setFillColor(sf::Color::White);
+		menu[i].setPosition(sf::Vector2f(width / 3, height / (liczba_przyciskow + 1) * (i + 1)));
+	}
+
 	menu[0].setFillColor(sf::Color(105, 196, 215));
 	menu[0].setString("Nowa gra");
-	menu[0].setPosition(sf::Vector2f(width / 3, height / (MAX_LICZBA_POZIOMOW + 1) * 1));
-	menu[1].setFont(font);
-	menu[1].setFillColor(sf::Color::White);
 	menu[1].setString("Pomoc");
-	menu[1].setPosition(sf::Vector2f(width / 3, height / (MAX_LICZBA_POZIOMOW + 1) * 2));
-	menu[2].setFont(font);
-	menu[2].setFillColor(sf::Color::White);
-	menu[2].setString("Wyjscie");
-	menu[2].setPosition(sf::Vector2f(width / 3, height / (MAX_LICZBA_POZIOMOW + 1) * 3));
+	menu[2].setString(L"Wyjœcie");
 	
 }
 
@@ -47,7 +52,7 @@ void Menu::draw(sf::RenderWindow* window)
 	window->draw(pole_glowne);
 	window->draw(naglowek);
 	window->draw(tytul);
-	for (int i = 0; i < MAX_LICZBA_POZIOMOW; i++)
+	for (int i = 0; i < liczba_przyciskow; i++)
 	{
 		window->draw(menu[i]);
 	}
@@ -56,13 +61,13 @@ void Menu::draw(sf::RenderWindow* window)
 
 void Menu::przesunG()
 {
-	if (selectedItem >= 0 && selectedItem < MAX_LICZBA_POZIOMOW)
+	if (selectedItem >= 0 && selectedItem < liczba_przyciskow)
 	{
 		menu[selectedItem].setFillColor(sf::Color::White);
 		menu[selectedItem].setStyle(sf::Text::Regular);
 		selectedItem--;
 		if (selectedItem < 0)
-			selectedItem = MAX_LICZBA_POZIOMOW - 1;
+			selectedItem = liczba_przyciskow - 1;
 		menu[selectedItem].setFillColor(sf::Color(105, 196, 215));
 		menu[selectedItem].setStyle(sf::Text::Bold);
 	}
@@ -72,12 +77,12 @@ void Menu::przesunG()
 
 void Menu::przesunD()
 {
-	if (selectedItem >= 0 && selectedItem < MAX_LICZBA_POZIOMOW)
+	if (selectedItem >= 0 && selectedItem < liczba_przyciskow)
 	{
 		menu[selectedItem].setFillColor(sf::Color::White);
 		menu[selectedItem].setStyle(sf::Text::Regular);
 		selectedItem++;
-		if (selectedItem >= MAX_LICZBA_POZIOMOW)
+		if (selectedItem >= liczba_przyciskow)
 			selectedItem = 0;
 		menu[selectedItem].setFillColor(sf::Color(105, 196, 215));
 		menu[selectedItem].setStyle(sf::Text::Bold);
@@ -85,10 +90,8 @@ void Menu::przesunD()
 
 }
 
-void Menu::sterowanie(sf::RenderWindow* window, sf::Event* event, int& menu_selected_flag)
+void Menu::sterowanie(sf::RenderWindow* window, sf::Event* event)
 {
-	if (event->type == sf::Event::Closed)
-		window->close();
 	if (event->type == sf::Event::KeyReleased)
 	{
 		if (event->key.code == sf::Keyboard::Up)
@@ -100,52 +103,34 @@ void Menu::sterowanie(sf::RenderWindow* window, sf::Event* event, int& menu_sele
 		{
 			przesunD();
 		}
-		if (event->key.code == sf::Keyboard::Escape)
+
+		
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 0)
 		{
-			menu_selected_flag = 0;
+			*aktualny_ekran = 2;
 		}
 
-		if (menu_selected_flag == 0)
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 1)
 		{
-			if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 0)
-			{
-				menu_selected_flag = 1;
-			}
-
-			if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 1)
-			{
-				menu_selected_flag = 2;
-			}
-
-			if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 2)
-			{
-				exit(0);
-			}
+			// Wstawiæ przekierowanie pomocy;
 		}
 
-		/*if (menu_selected_flag == 0)
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 2)
 		{
-			if (event.key.code == sf::Keyboard::Enter && getSelectedItem() == 0)
-			{
-				menu_selected_flag = 1;
-			}
-
-			if (event.key.code == sf::Keyboard::Enter && getSelectedItem() == 1)
-			{
-				menu_selected_flag = 2;
-			}
-
-			if (event.key.code == sf::Keyboard::Enter && getSelectedItem() == 2)
-			{
-				exit(0);
-			}
+			exit(0);
 		}
-		*/
+		
 	}
 }
 
-Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery)
+Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery, int* aktualny_ekran, unsigned int* ekran)
 {
+	liczba_przyciskow = 3;
+	menu = new sf::Text[liczba_przyciskow];
+
+	this->aktualny_ekran = aktualny_ekran;
+	this->ekran = ekran;
+
 	float width = 600.f;
 	float height = 300.f;
 
@@ -158,7 +143,8 @@ Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery)
 	naglowek.setFillColor(sf::Color(105, 196, 215));
 
 	tytul.setFont(font);
-	tytul.setString("Flappy Pet");
+	if (*ekran == 1) { tytul.setString("Koniec Gry"); }
+	else if(*ekran == 3) { tytul.setString(L"Co teraz chcesz zrobiæ?"); }
 	tytul.setCharacterSize(40);
 	tytul.setPosition({ (naglowek.getPosition().x + naglowek.getSize().x / 2) - 100.f , naglowek.getPosition().y + 25.f });
 
@@ -168,11 +154,11 @@ Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery)
 		return;
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < liczba_przyciskow; i++)
 	{
 		menu[i].setFont(font);
 		menu[1].setFillColor(sf::Color::White);
-		menu[i].setPosition(sf::Vector2f(pole_glowne.getPosition().x + width / 3, pole_glowne.getPosition().y + naglowek.getSize().y + height / (MAX_LICZBA_POZIOMOW + 1) * i));
+		menu[i].setPosition(sf::Vector2f(pole_glowne.getPosition().x + width / 3, pole_glowne.getPosition().y + naglowek.getSize().y + height / (liczba_przyciskow + 1) * i));
 	}
 	
 	menu[0].setFillColor(sf::Color(105, 196, 215));
@@ -184,11 +170,90 @@ Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery)
 
 }
 
-void Koniec_gry::sterowanie(sf::RenderWindow* window, sf::Event* event, int& menu_selected_flag)
+void Koniec_gry::sterowanie(sf::RenderWindow* window, sf::Event* event)
 {
-	if (event->type == sf::Event::Closed)
-		window->close();
+	if (event->type == sf::Event::KeyReleased)
+	{
+		if (event->key.code == sf::Keyboard::Escape && *ekran == 3)
+		{
+			*ekran = 0;
+		}
 
+		if (event->key.code == sf::Keyboard::Up)
+		{
+			przesunG();
+		}
+
+		if (event->key.code == sf::Keyboard::Down)
+		{
+			przesunD();
+		}
+
+		
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 0)
+		{
+			*aktualny_ekran = 112;
+		}
+
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 1)
+		{
+			*aktualny_ekran = 0;
+		}
+
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 2)
+		{
+			exit(0);
+		}
+		
+	}
+}
+
+Menu_Poziom_Wybor::Menu_Poziom_Wybor(sf::View* adres_kamery, int* aktualny_ekran, unsigned int* poziom_gry)
+{
+	liczba_przyciskow = 4;
+	menu = new sf::Text[liczba_przyciskow];
+
+	this->aktualny_ekran = aktualny_ekran;
+	this->poziom_gry = poziom_gry;
+
+	float width = 800.f;
+	float height = 600.f;
+
+	pole_glowne.setPosition({ 0.f,0.f });
+	pole_glowne.setSize({ width,height });
+	pole_glowne.setFillColor(sf::Color(49, 165, 80));
+
+	naglowek.setPosition({ 0.f,0.f });
+	naglowek.setSize({ 800.f,100.f });
+	naglowek.setFillColor(sf::Color(105, 196, 215));
+
+	tytul.setFont(font);
+	tytul.setString(L"Wybór Poziomu");
+	tytul.setCharacterSize(40);
+	tytul.setPosition({ (naglowek.getSize().x / 2) - 100.f , 25.f });
+
+	//adres_kamery->
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		return;
+	}
+	for (int i = 0; i < liczba_przyciskow; i++)
+	{
+		menu[i].setFont(font);
+		menu[1].setFillColor(sf::Color::White);
+		menu[i].setPosition(sf::Vector2f(width / 3, height / (liczba_przyciskow + 1) * (i + 1)));
+	}
+
+	menu[0].setFillColor(sf::Color(105, 196, 215));
+	menu[0].setString("Heaven");
+	menu[1].setString("Midnight");
+	menu[2].setString("Gates of hell");
+	menu[3].setString("Menu");
+
+}
+
+void Menu_Poziom_Wybor::sterowanie(sf::RenderWindow* window, sf::Event* event)
+{
 	if (event->type == sf::Event::KeyReleased)
 	{
 		if (event->key.code == sf::Keyboard::Up)
@@ -200,27 +265,31 @@ void Koniec_gry::sterowanie(sf::RenderWindow* window, sf::Event* event, int& men
 		{
 			przesunD();
 		}
-		if (event->key.code == sf::Keyboard::Escape)
-		{
-			menu_selected_flag = 0;
-		}
-		if (menu_selected_flag == 0)
-		{
-			if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 0)
-			{
-				menu_selected_flag = 1;
-			}
 
-			if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 1)
-			{
-				menu_selected_flag = 2;
-			}
 
-			if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 2)
-			{
-				exit(0);
-			}
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 0)
+		{
+			*aktualny_ekran = 1;
+			*poziom_gry = 1;
 		}
+
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 1)
+		{
+			*aktualny_ekran = 1;
+			*poziom_gry = 2;
+		}
+
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 2)
+		{
+			*aktualny_ekran = 1;
+			*poziom_gry = 3;
+		}
+
+		if (event->key.code == sf::Keyboard::Enter && getSelectedItem() == 3)
+		{
+			*aktualny_ekran = 0;
+		}
+
 	}
 }
 
