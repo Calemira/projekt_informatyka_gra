@@ -11,9 +11,10 @@
 
 int main()
 {
+	srand(time(NULL));
 	Pomoc pomoc;
 	//int menu_selected_flag = 0; // problematyczna zmienna 
-	int aktualny_ekran = 0; // 0 - Menu ; 1 - Gra ; 2 - Menu_Poziom_Wybor ; 112 - resetowanie ekranu
+	int aktualny_ekran = 0; // 0 - Menu ; 1 - Gra ; 2 - Menu_Poziom_Wybor; 3 - Historia_Wynikow ; 112 - resetowanie ekranu
 	int poprzedni_ekran = 0;
 	unsigned int poziom_gry;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Flappy pet");
@@ -35,6 +36,7 @@ int main()
 			{
 			case 0:
 			case 2:
+			case 3:
 				menu->sterowanie(&window, &event);
 				break;
 			case 1:
@@ -73,6 +75,8 @@ int main()
 				break;
 			case 2: if (menu == 0) { menu = new Menu_Poziom_Wybor(&kamera, &aktualny_ekran, &poziom_gry); }
 				break;
+			case 3: if (menu == 0) { menu = new Historia_Wynikow(&kamera, &aktualny_ekran); }
+				break;
 			}
 		}
 
@@ -82,6 +86,7 @@ int main()
 		{
 		case 0:
 		case 2:
+		case 3:
 			kamera.setCenter(400.f, 300.f);
 			menu->draw(&window);
 			break;

@@ -27,8 +27,7 @@ gra::gra(sf::RenderWindow *adres_okna, sf::View* adres_kamery, sf::Event* adres_
 	wynik_tekst.setString("Wynik: 0");
 
 	this->aktualny_ekran = aktualny_ekran;
-	numer_poziomu = *poziom_gry;
-	srand(time(NULL));
+	staty_gra.numer_poziomu = *poziom_gry;
 	kamera = adres_kamery;
 	zdarzenie = adres_zdarzen;
 	oknogra.setPosition(0, 0);
@@ -53,7 +52,7 @@ gra::gra(sf::RenderWindow *adres_okna, sf::View* adres_kamery, sf::Event* adres_
 	oknogra.setTexture(teksturaa);
 	this->adres_okna = adres_okna;
 	ptak.ptak_ksztalt_return()->setPosition({ 70, 256 });
-	for (int i=0;i<100;i++)//kolejka
+	for (int i=0;i<5;i++)//kolejka
 	{
 		int x;
 		x = -100 + rand() % 200;
@@ -143,7 +142,7 @@ void gra::pozycja_kamery()
 {
 	oknogra.setPosition(kamera->getCenter().x - 400.f, kamera->getCenter().y - 300.f);
 	kamera->setCenter(ptak.ptak_ksztalt_return()->getPosition().x+230, 300.f);
-	switch(numer_poziomu)
+	switch(staty_gra.numer_poziomu)
 	{
 	case 1:
 		wynik_tekst.move(3.f, 0.f);
@@ -168,12 +167,38 @@ void gra::silnikfizyczny()
 		}
 	}
 
-	if (ptak.ptak_ksztalt_return()->getPosition().x > 337.f + 260.f * wynik)
+	if (ptak.ptak_ksztalt_return()->getPosition().x > 337.f + 260.f * staty_gra.wynik)
 	{
-		wynik++;
-		wynik_tekst.setString("Wynik: " + std::to_string(wynik));
+		staty_gra.wynik++;
+		ktory_slupek++;
+		wynik_tekst.setString("Wynik: " + std::to_string(staty_gra.wynik));
 	}
 
+	if (ktory_slupek == 3) //Przyk³adowo
+	{
+		if (trzeba_generowac == false)
+		{
+			trzeba_generowac = true;
+		}
+
+		if (trzeba_generowac == true)
+		{
+			for (int i = 0; i < 3*2; i++)
+			{
+				slupki.erase(slupki.begin());
+			}
+			for (int i = 0; i < 3; i++)
+			{
+				int x;
+				x = -100 + rand() % 200;
+				slupki.emplace_back(337.f + (staty_gra.wynik + i + 1) * 260.f, 0.f, 182.f + x);
+				slupki.emplace_back(337.f + (staty_gra.wynik + i + 1) * 260.f, 352.f + x, 248.f - x);
+			}
+			ktory_slupek = 0;
+			trzeba_generowac = false;
+			std::cout << "liczba slupkow: " << slupki.size() << std::endl;
+		}
+	}
 
 }
 
@@ -195,5 +220,22 @@ void gra::sprawdz_czy_koniec()
 	{
 		ekran = 1;
 		okno_koniec_gry = new Koniec_gry(kamera->getCenter().x -300.f, kamera->getCenter().y - 200.f, kamera, aktualny_ekran, &ekran);
+		zapisz_statystyki_do_pliku();
 	}
+}
+
+void gra::zapisz_statystyki_do_pliku()
+{
+	std::fstream plik;
+	plik.open("staty.txt", std::ios::app | std::ios::binary);
+	if (plik.good() == true)
+	{
+		//std::cout << "Plik otworzony poprawnie" << std::endl; 
+		plik.write((char*)&staty_gra, sizeof(staty_gra));
+	}
+	else
+	{
+		std::cout << "Problem z plikiem" << std::endl;
+	}
+	plik.close();
 }

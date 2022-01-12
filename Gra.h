@@ -4,14 +4,7 @@
 #include "pet.h"
 #include "slupki.h"
 #include "menu.h"
-
-/*
-struct Staty
-{
-
-};
-
-*/
+#include <fstream>
 
 class gra
 {
@@ -24,6 +17,8 @@ public:
 	void aktualizuj();
 	void sprawdz_czy_koniec();
 	void sterowanie_event();
+	void zapisz_statystyki_do_pliku();
+
 private:
 	pet ptak;
 	sf::RenderWindow *adres_okna;
@@ -38,9 +33,10 @@ private:
 	int* aktualny_ekran;
 	sf::Text wynik_tekst;
 	sf::Font czcionka;
-	unsigned int wynik = 0;
-	unsigned int numer_poziomu;
 	sf::RectangleShape* okno_pomocy = 0;
 	sf::Texture* tekstura_pomocy = 0;
+	Staty staty_gra;
+	int ktory_slupek = 0;
+	bool trzeba_generowac = false;
 
 };
