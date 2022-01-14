@@ -33,6 +33,8 @@ gra::gra(sf::RenderWindow *adres_okna, sf::View* adres_kamery, sf::Event* adres_
 	oknogra.setPosition(0, 0);
 	oknogra.setSize({ 800,600 });
 
+	slupki.reserve(10);
+
 	switch (*poziom_gry)
 	{
 	case 1:
@@ -61,6 +63,12 @@ gra::gra(sf::RenderWindow *adres_okna, sf::View* adres_kamery, sf::Event* adres_
 	}
 
 }
+
+gra::~gra()
+{
+	delete teksturaa;
+}
+
 void gra::draw()
 {
 
@@ -170,34 +178,23 @@ void gra::silnikfizyczny()
 	if (ptak.ptak_ksztalt_return()->getPosition().x > 337.f + 260.f * staty_gra.wynik)
 	{
 		staty_gra.wynik++;
-		ktory_slupek++;
+		ile_ma_za_soba++;
 		wynik_tekst.setString("Wynik: " + std::to_string(staty_gra.wynik));
 	}
 
-	if (ktory_slupek == 3) //Przyk³adowo
+	if (ile_ma_za_soba == 2)
 	{
-		if (trzeba_generowac == false)
-		{
-			trzeba_generowac = true;
-		}
+		int x;
 
-		if (trzeba_generowac == true)
-		{
-			for (int i = 0; i < 3*2; i++)
-			{
-				slupki.erase(slupki.begin());
-			}
-			for (int i = 0; i < 3; i++)
-			{
-				int x;
-				x = -100 + rand() % 200;
-				slupki.emplace_back(337.f + (staty_gra.wynik + i + 1) * 260.f, 0.f, 182.f + x);
-				slupki.emplace_back(337.f + (staty_gra.wynik + i + 1) * 260.f, 352.f + x, 248.f - x);
-			}
-			ktory_slupek = 0;
-			trzeba_generowac = false;
-			std::cout << "liczba slupkow: " << slupki.size() << std::endl;
-		}
+		// Usuwamy 2 pierwsze s³upki
+		slupki.erase(slupki.begin());
+		slupki.erase(slupki.begin());
+		
+		// Wstawiamy 2 nowe s³upki na koniec kontenera
+		x = -100 + rand() % 200;
+		slupki.emplace_back(337.f + (staty_gra.wynik + 3) * 260.f, 0.f, 182.f + x); // +3 bo 3 szczeliny s¹ przed nim (to trzeba to zrobiæ jako t¹ czwart¹)
+		slupki.emplace_back(337.f + (staty_gra.wynik + 3) * 260.f, 352.f + x, 248.f - x);
+		ile_ma_za_soba--;
 	}
 
 }
@@ -230,7 +227,6 @@ void gra::zapisz_statystyki_do_pliku()
 	plik.open("staty.txt", std::ios::app | std::ios::binary);
 	if (plik.good() == true)
 	{
-		//std::cout << "Plik otworzony poprawnie" << std::endl; 
 		plik.write((char*)&staty_gra, sizeof(staty_gra));
 	}
 	else

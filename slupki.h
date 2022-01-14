@@ -8,6 +8,7 @@ private:
 	sf::RectangleShape slupek;
 public:
 	slupki(float x, float y, float height);
+	~slupki() = default;
 	void draw(sf::RenderWindow* oknoslupki);
 	sf::RectangleShape* zwroc_slupek() { return &slupek; };
 };

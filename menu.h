@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <fstream>
+#include "animacja.h"
 
 struct Staty
 {
@@ -13,6 +14,13 @@ struct Staty
 
 class Menu
 {
+private:
+	sf::RectangleShape* pet_menu = 0;
+	sf::Texture* pet_tekstura = 0;
+	animacja* pet_animacja = 0;
+	int ktora_klatka = 0;
+	double klatka_timer = 0.0;
+
 protected:
 	sf::Font font;
 	sf::Text* menu = 0;
@@ -33,6 +41,8 @@ public:
 	int getSelectedItem() { return selectedItem; }
 	virtual void draw(sf::RenderWindow* window);
 	virtual void sterowanie(sf::RenderWindow* window, sf::Event* event);
+	void animuj();
+	void inicjalizacja_animacji();
 };
 
 class Koniec_gry : public Menu

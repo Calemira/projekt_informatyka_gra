@@ -7,10 +7,15 @@ pet::pet()
 	tekstura.loadFromFile("pet.png");
 	ptak_ksztalt.setTexture(&tekstura);
 	ptak_ksztalt.setSize({ 76,46 });
+	ptak_animacja = { &tekstura,2 };
+	ptak_ksztalt.setTextureRect(ptak_animacja.klatka_zwroc());
 }
+
 void pet::rysuj_pet(sf::RenderWindow *adres_okna)
 {
 	adres_okna->draw(ptak_ksztalt);
+	ptak_animacja.aktualizacja(int(czy_spacja_kliknieta));
+	ptak_ksztalt.setTextureRect(ptak_animacja.klatka_zwroc());
 }
 void pet::sterowanie()
 {
@@ -31,10 +36,6 @@ void pet::sterowanie()
 	}
 	ptak_ksztalt.setPosition(ptak_ksztalt.getPosition().x + predkosc, ptak_ksztalt.getPosition().y - 3 + 10 * zegar);
 
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	//{
-	//	ptak_ksztalt.setPosition(ptak_ksztalt.getPosition().x+10, ptak_ksztalt.getPosition().y);//na potrzeby testow
-	//}
 }
 
 void pet::ustaw_czy_zyje(bool czy_zyje)

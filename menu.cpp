@@ -42,6 +42,8 @@ Menu::Menu(sf::View* adres_kamery, int* aktualny_ekran)
 	menu[0].setString("Nowa gra");
 	menu[1].setString(L"Historia wyników");
 	menu[2].setString(L"Wyjœcie");
+
+	inicjalizacja_animacji();
 	
 }
 
@@ -54,6 +56,7 @@ Menu::~Menu()
 
 void Menu::draw(sf::RenderWindow* window)
 {
+	klatka_timer += 1.0 / 60.0;
 	window->draw(pole_glowne);
 	window->draw(naglowek);
 	window->draw(tytul);
@@ -61,6 +64,15 @@ void Menu::draw(sf::RenderWindow* window)
 	{
 		window->draw(menu[i]);
 	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		window->draw(pet_menu[i]);
+		pet_animacja[i].aktualizacja(ktora_klatka);
+		pet_menu[i].setTextureRect(pet_animacja[i].klatka_zwroc());
+	}
+	
+	animuj();
 }
 
 
@@ -128,6 +140,45 @@ void Menu::sterowanie(sf::RenderWindow* window, sf::Event* event)
 	}
 }
 
+void Menu::animuj()
+{
+	if (klatka_timer >= 0.25)
+	{
+		if (ktora_klatka == 1)
+		{
+			ktora_klatka = 0;
+			klatka_timer = 0.0;
+		}
+		else
+		{
+			ktora_klatka = 1;
+			klatka_timer = 0.0;
+		}
+	}
+}
+
+void Menu::inicjalizacja_animacji()
+{
+	pet_menu = new sf::RectangleShape[2];
+	pet_tekstura = new sf::Texture[2];
+	pet_animacja = new animacja[2];
+
+	pet_menu[0].setSize({ 76,46 });
+	pet_menu[1].setSize({ 76,46 });
+	pet_menu[0].setPosition({ naglowek.getPosition().x + 100.f, naglowek.getPosition().y + 20.f });
+	pet_menu[1].setPosition({ naglowek.getPosition().x + naglowek.getSize().x - 100.f - pet_menu[1].getSize().x,naglowek.getPosition().y + 20.f });
+
+	pet_tekstura[0].loadFromFile("pet_menu.png");
+	pet_tekstura[1].loadFromFile("pet_menu2.png");
+	pet_animacja[0] = { &pet_tekstura[0],2 };
+	pet_animacja[1] = { &pet_tekstura[1],2 };
+
+	pet_menu[0].setTexture(&pet_tekstura[0]);
+	pet_menu[1].setTexture(&pet_tekstura[1]);
+	pet_menu[0].setTextureRect(pet_animacja[0].klatka_zwroc());
+	pet_menu[1].setTextureRect(pet_animacja[1].klatka_zwroc());
+}
+
 Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery, int* aktualny_ekran, unsigned int* ekran)
 {
 	liczba_przyciskow = 3;
@@ -172,7 +223,7 @@ Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery, int* aktualny_e
 	menu[1].setString(L"Wróæ do menu");
 	menu[2].setString("Wyjscie z gry");
 	
-
+	inicjalizacja_animacji();
 
 }
 
@@ -256,6 +307,8 @@ Menu_Poziom_Wybor::Menu_Poziom_Wybor(sf::View* adres_kamery, int* aktualny_ekran
 	menu[1].setString("Midnight");
 	menu[2].setString("Gates of hell");
 	menu[3].setString("Menu");
+
+	inicjalizacja_animacji();
 
 }
 

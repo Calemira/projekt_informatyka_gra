@@ -5,14 +5,13 @@
 #include "menu.h"
 #include "pet.h"
 #include "Gra.h"
-#include "pomoc.h"
 
 
 
 int main()
 {
 	srand(time(NULL));
-	Pomoc pomoc;
+	//Pomoc pomoc;
 	//int menu_selected_flag = 0; // problematyczna zmienna 
 	int aktualny_ekran = 0; // 0 - Menu ; 1 - Gra ; 2 - Menu_Poziom_Wybor; 3 - Historia_Wynikow ; 112 - resetowanie ekranu
 	int poprzedni_ekran = 0;

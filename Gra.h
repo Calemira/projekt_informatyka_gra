@@ -10,6 +10,7 @@ class gra
 {
 public:
 	gra(sf::RenderWindow *adres_okna, sf::View* adres_kamery, sf::Event* adres_zdarzen, int* aktualny_ekran, unsigned int* poziom_gry);
+	~gra();
 	void draw();
 	void sterowanie();
 	void pozycja_kamery();
@@ -37,6 +38,6 @@ private:
 	sf::Texture* tekstura_pomocy = 0;
 	Staty staty_gra;
 	int ktory_slupek = 0;
-	bool trzeba_generowac = false;
+	int ile_ma_za_soba = 0;
 
 };
