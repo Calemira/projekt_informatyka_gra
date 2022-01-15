@@ -11,8 +11,6 @@
 int main()
 {
 	srand(time(NULL));
-	//Pomoc pomoc;
-	//int menu_selected_flag = 0; // problematyczna zmienna 
 	int aktualny_ekran = 0; // 0 - Menu ; 1 - Gra ; 2 - Menu_Poziom_Wybor; 3 - Historia_Wynikow ; 112 - resetowanie ekranu
 	int poprzedni_ekran = 0;
 	unsigned int poziom_gry;
@@ -21,7 +19,6 @@ int main()
 	Menu *menu = new Menu(&kamera,&aktualny_ekran);
 
 	window.setFramerateLimit(60);
-	//gra program(&window, &kamera);
 	gra* program = 0;
 	sf::Event event;
 	while (window.isOpen())

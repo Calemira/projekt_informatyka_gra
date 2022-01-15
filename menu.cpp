@@ -201,7 +201,7 @@ Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery, int* aktualny_e
 
 	tytul.setFont(font);
 	if (*ekran == 1) { tytul.setString("Koniec Gry"); }
-	else if(*ekran == 3) { tytul.setString(L"Co teraz chcesz zrobiæ?"); }
+	else if(*ekran == 3) { tytul.setString(L"    Opcje"); }
 	tytul.setCharacterSize(40);
 	tytul.setPosition({ (naglowek.getPosition().x + naglowek.getSize().x / 2) - 100.f , naglowek.getPosition().y + 25.f });
 

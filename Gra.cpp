@@ -2,30 +2,19 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-/*
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-	{
-		if (ekran==0)
-		{
-			ekran = 1;
-			okno_koniec_gry = new Koniec_gry(kamera->getCenter().x - kamera->getSize().x / 4, kamera->getCenter().y - kamera->getSize().y / 4, kamera);
-		}
-	}
-	*/
-
 gra::gra(sf::RenderWindow *adres_okna, sf::View* adres_kamery, sf::Event* adres_zdarzen, int* aktualny_ekran, unsigned int* poziom_gry)
-{
+{//ladowanie czcionki
 	if (!czcionka.loadFromFile("arial.ttf"))
 	{
 		std::cout << "Problem z czcionka" << std::endl;
 	}
-
+//cechy wygladowe licznika wyniku
 	wynik_tekst.setFont(czcionka);
 	wynik_tekst.setPosition(-88.f, 16.f);
 	wynik_tekst.setFillColor(sf::Color::Magenta);
 	wynik_tekst.setCharacterSize(30);
 	wynik_tekst.setString("Wynik: 0");
-
+//ustawianie okna gry
 	this->aktualny_ekran = aktualny_ekran;
 	staty_gra.numer_poziomu = *poziom_gry;
 	kamera = adres_kamery;
@@ -34,6 +23,7 @@ gra::gra(sf::RenderWindow *adres_okna, sf::View* adres_kamery, sf::Event* adres_
 	oknogra.setSize({ 800,600 });
 
 	slupki.reserve(10);
+//ustawienie tla i predkosci ptaka w zaleznosci od poziomu gry
 
 	switch (*poziom_gry)
 	{
@@ -54,7 +44,7 @@ gra::gra(sf::RenderWindow *adres_okna, sf::View* adres_kamery, sf::Event* adres_
 	oknogra.setTexture(teksturaa);
 	this->adres_okna = adres_okna;
 	ptak.ptak_ksztalt_return()->setPosition({ 70, 256 });
-	for (int i=0;i<5;i++)//kolejka
+	for (int i=0;i<5;i++)
 	{
 		int x;
 		x = -100 + rand() % 200;
