@@ -182,7 +182,6 @@ Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery, int* aktualny_e
 {
 	liczba_przyciskow = 3;
 	menu = new sf::Text[liczba_przyciskow];
-	std::cout << "inicjalizowanie pamieci -> koniec gry" << std::endl;
 
 	this->aktualny_ekran = aktualny_ekran;
 	this->ekran = ekran;
@@ -267,7 +266,6 @@ Menu_Poziom_Wybor::Menu_Poziom_Wybor(sf::View* adres_kamery, int* aktualny_ekran
 {
 	liczba_przyciskow = 4;
 	menu = new sf::Text[liczba_przyciskow];
-	std::cout << "inicjalizowanie pamieci -> menu_poziom_wybor" << std::endl;
 
 	this->aktualny_ekran = aktualny_ekran;
 	this->poziom_gry = poziom_gry;
