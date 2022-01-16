@@ -5,7 +5,6 @@ Menu::Menu(sf::View* adres_kamery, int* aktualny_ekran)
 {
 	liczba_przyciskow = 3;
 	menu = new sf::Text[liczba_przyciskow];
-	std::cout << "inicjalizowanie pamieci -> menu" << std::endl;
 
 	this->aktualny_ekran = aktualny_ekran;
 
@@ -205,7 +204,6 @@ Koniec_gry::Koniec_gry(float x, float y, sf::View* adres_kamery, int* aktualny_e
 	tytul.setCharacterSize(40);
 	tytul.setPosition({ (naglowek.getPosition().x + naglowek.getSize().x / 2) - 100.f , naglowek.getPosition().y + 25.f });
 
-	//adres_kamery->
 	if (!font.loadFromFile("arial.ttf"))
 	{
 		return;
@@ -290,7 +288,6 @@ Menu_Poziom_Wybor::Menu_Poziom_Wybor(sf::View* adres_kamery, int* aktualny_ekran
 	tytul.setCharacterSize(40);
 	tytul.setPosition({ (naglowek.getSize().x / 2) - 100.f , 25.f });
 
-	//adres_kamery->
 	if (!font.loadFromFile("arial.ttf"))
 	{
 		return;
@@ -376,7 +373,6 @@ Historia_Wynikow::Historia_Wynikow(sf::View* adres_kamery, int* aktualny_ekran)
 	tytul.setCharacterSize(40);
 	tytul.setPosition({ (naglowek.getSize().x / 2) - 150.f , 25.f });
 
-	//adres_kamery->
 	if (!font.loadFromFile("arial.ttf"))
 	{
 		return;
@@ -472,7 +468,6 @@ void Historia_Wynikow::draw(sf::RenderWindow* window)
 void Historia_Wynikow::odczyt_statystyk_z_pliku()
 {
 	std::fstream plik;
-	//unsigned int ile_razy_odczytano = 0;
 	plik.open("staty.txt", std::ios::in | std::ios::binary);
 	plik.seekg(0, std::ios::end); // 0 pozycja od koñca pliku
 	unsigned int f = plik.tellg(); // pozycja koñcowa
@@ -484,20 +479,16 @@ void Historia_Wynikow::odczyt_statystyk_z_pliku()
 			plik.seekg(f);
 			std::cout << plik.tellg()<<std::endl;
 			plik.read((char*)&staty_menu[i], sizeof(*staty_menu));
-			//ile_razy_odczytano++;
 		}
 	}
 	else
 	{
 		std::cout << "Problem z plikiem" << std::endl;
 		plik.close();
-		//*gdzie_zapamietac_ile_razy_odczytano = 0;
 		return;
 	}
 	
 
 	plik.close();
-	//std::cout << ile_razy_odczytano - 1 << std::endl;
-	//*gdzie_zapamietac_ile_razy_odczytano = ile_razy_odczytano - 1;
 }
 

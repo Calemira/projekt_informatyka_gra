@@ -92,7 +92,7 @@ void gra::sterowanie()
 		break;
 	}
 }
-
+//sterowanie ekranem podczas rozgrywki
 void gra::sterowanie_event()
 {
 	switch (ekran)
@@ -182,7 +182,7 @@ void gra::silnikfizyczny()
 		
 		// Wstawiamy 2 nowe s³upki na koniec kontenera
 		x = -100 + rand() % 200;
-		slupki.emplace_back(337.f + (staty_gra.wynik + 3) * 260.f, 0.f, 182.f + x); // +3 bo 3 szczeliny s¹ przed nim (to trzeba to zrobiæ jako t¹ czwart¹)
+		slupki.emplace_back(337.f + (staty_gra.wynik + 3) * 260.f, 0.f, 182.f + x); // +3 bo 3 szczeliny s¹ przed nim
 		slupki.emplace_back(337.f + (staty_gra.wynik + 3) * 260.f, 352.f + x, 248.f - x);
 		ile_ma_za_soba--;
 	}
